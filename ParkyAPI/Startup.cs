@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using System.Reflection;
+using System.IO;
 
 namespace ParkyAPI
 {
@@ -42,7 +44,26 @@ namespace ParkyAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ParkyAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                { Title = "ParkyAPI",
+                  Version = "v1",
+                  Description = "My Parky API",
+                  Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                  {
+                      Email = "mgbedorochinedu@gmail.com",
+                      Name = "Chinedu Mgbedoro",
+                      Url = new Uri("https://www.linkedin.com/in/mgbedorochinedu/")
+                  },
+                  License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                  {
+                      Name = "MIT License",
+                      Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                  }
+                });
+
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                c.IncludeXmlComments(cmlCommentsFullPath);
             });
         }
 

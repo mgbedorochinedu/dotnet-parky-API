@@ -13,6 +13,8 @@ namespace ParkyAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class NationalParksController : ControllerBase
     {
         private readonly INationalParkRepository _nationalParkRepository;
@@ -24,6 +26,11 @@ namespace ParkyAPI.Controllers
             _mapper = mapper;
         }
 
+
+        /// <summary>
+        /// Get list of national parks.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<NationalParkDto>))]
         public IActionResult GetNationalParks()
@@ -37,6 +44,12 @@ namespace ParkyAPI.Controllers
             return Ok(objDto);
         }
 
+
+        /// <summary>
+        /// Get individual national park
+        /// </summary>
+        /// <param name="nationalParkId"> The Id of the national Park </param>
+        /// <returns></returns>
         [HttpGet("{nationalParkId:int}", Name = "GetNationalPark")]
         [ProducesResponseType(200, Type = typeof(NationalParkDto))]
         [ProducesResponseType(404)]
@@ -51,6 +64,7 @@ namespace ParkyAPI.Controllers
             var objDto = _mapper.Map<NationalParkDto>(obj);
             return Ok(objDto);
         }
+
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(NationalParkDto))]
@@ -76,6 +90,7 @@ namespace ParkyAPI.Controllers
             }
             return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalParkObj.Id }, nationalParkObj);
         }
+
 
         [HttpPatch("{nationalParkId:int}", Name = "UpdateNationalPark")]
         [ProducesResponseType(204)]
